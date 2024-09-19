@@ -23,10 +23,10 @@ def setup_database():
     cursor.close()
     connection.close()
 
-# def test_create_player(setup_database):
-#     player = Player(Id="donarumma_01", playerName="kjsafbkjaADNad")
-#     player_id = create_player(player)
-#     assert player_id
+def test_create_player(setup_database):
+    player = Player(id="donarumma_01", player_name="kjsafbkjaADNad")
+    player_id = create_player(player)
+    assert player_id
 
 def test_get_all_players_seasons(setup_database):
     all_players_seasons = get_all_players_seasons()

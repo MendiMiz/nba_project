@@ -1,11 +1,10 @@
 from api.request_api import request_data
 from repository.players_repository import create_player
-from repository.players_season_repository import create_player_season
+from repository.players_season_repository import create_player_season, get_players_by_position
 from utils.json_loader import load_json
-# from service.answer_service import write_answers_to_db
-# from repository.users_repository import create_user
 from models.players_in_seasons import playersInSeason
 from models.player import Player
+from toolz import pipe, partial
 
 def filter_question_answers(question):
     return {"question_text": question["question"], "correct_answer": question["correct_answer"],
@@ -59,7 +58,32 @@ def write_players_seasons_to_db():
     players_seasons_json = players_seasons_from_api()
     for player in players_seasons_json:
         player_season_model = convert_player_season_to_model(player)
-        write_player_to_db = write_player_if_not_exists(player_season_model)
-        write_player_season_to_db = create_player_season(player_season_model)
+        player_season_model2 = add_atr_and_ppg_to_player(player_season_model)
+        write_player_to_db = write_player_if_not_exists(player_season_model2)
+        write_player_season_to_db = create_player_season(player_season_model2)
     return
+
+def add_atr_and_ppg_to_player(player_season_model: playersInSeason):
+    player_season_model.atr = calculate_atr(player_season_model)
+    player_season_model.ppg = calculate_ppg(player_season_model)
+    return player_season_model
+
+def calculate_atr(player_season_model: playersInSeason):
+    return player_season_model.assists / player_season_model.turnovers \
+        if player_season_model.turnovers > 0 else player_season_model.assists
+
+def calculate_ppg(player_season_model: playersInSeason):
+    return player_season_model.points / player_season_model.games
+
+def calculate_ppg_ratio(player_season_model: playersInSeason):
+    players_in_position = get_players_by_position(player_season_model.position)
+    ppg_average_season = pipe (
+        players_in_position,
+        partial(map, calculate_ppg),
+        lambda a: sum(a) / len(a)
+    )
+    ppg_player = player_season_model.points / player_season_model.games
+    ppg_ratio_player = ppg_player / ppg_average_season
+    return ppg_ratio_player
+
 

@@ -43,6 +43,8 @@ def create_tables():
         team VARCHAR(255) NOT NULL,
         season INT NOT NULL,
         player_id VARCHAR(50) NOT NULL,
+        atr FLOAT,
+        ppg FLOAT,
         FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE
     );
 

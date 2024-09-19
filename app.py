@@ -1,10 +1,16 @@
-from flask import Flask, jsonify
+from flask import Flask
+from routes.player_controller import player_blueprint
+from repository.seed_database import create_tables, get_db_connection
+from service.players_service import write_players_seasons_to_db
 
-app = Flask(__name__)
+def create_app():
+    flask_app = Flask(__name__)
+    flask_app.register_blueprint(player_blueprint, url_prefix="/api/players")
+    return flask_app
 
-@app.route('/<int:nati_id>', methods=['GET'])
-def enosh(nati_id)
-    return jsonify()
 
-if __name__ == '__main__':
-    app.register_blueprint(player_blueprint, url_p)
+if __name__ == "__main__":
+    create_tables()
+    # write_players_seasons_to_db()
+    app = create_app()
+    app.run(debug=True)

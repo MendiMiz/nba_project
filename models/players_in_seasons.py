@@ -28,3 +28,5 @@ class playersInSeason:
     team: str
     season: int
     player_id: str
+    atr: float = None
+    ppg: float = None
