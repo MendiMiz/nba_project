@@ -3,6 +3,6 @@ from dataclasses import dataclass
 
 @dataclass
 class Player:
-    Id: str
-    playerName: str
+    id: str
+    player_name: str
 

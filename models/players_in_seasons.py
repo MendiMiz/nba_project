@@ -3,29 +3,28 @@ from dataclasses import dataclass
 
 @dataclass
 class playersInSeason:
-    playerName: str
+    id: int
+    player_name: str
     position: str
-    age: int
     games: int
-    fieldGoals: int
-    fieldAttempts: int
-    fieldPercent: int
-    threeFg: int
-    threeAttempts: int
-    threePercent: float
-    twoFg: int
-    twoAttempts: int
-    twoPercent: float
-    effectFgPercent: float
+    field_goals: int
+    field_attempts: int
+    field_percent: int
+    three_fg: int
+    three_attempts: int
+    three_percent: float
+    two_fg: int
+    two_attempts: int
+    two_percent: float
+    effect_fg_percent: float
     ft: int
-    ftAttempts: int
-    ftPercent: float
+    ft_attempts: int
     assists: int
     steals: int
     blocks: int
     turnovers: int
-    personalFouls: int
+    personal_fouls: int
     points: int
-    team: int
+    team: str
     season: int
-    playerId: str
+    player_id: str
